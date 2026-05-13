@@ -44,5 +44,16 @@ services:
     depends_on:
       - auth-service
 
+  frontend:
+    build:
+      context: ./frontend/dungeon-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/dungeon-frontend:/app
+      - /app/node_modules
+    depends_on:
+      - nginx
+
 volumes:
   mysql_data:
