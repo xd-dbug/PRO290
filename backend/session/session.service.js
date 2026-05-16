@@ -44,12 +44,16 @@ async function endSession(userId, sessionId, now = new Date()) {
         durationMinutes,
         completedAt: now.toISOString()
     };
-    rabbitmq.channel.publish(
-        EXCHANGE,
-        ROUTING_KEY,
-        Buffer.from(JSON.stringify(payload)),
-        { persistent: true }
-    );
+    try {
+        rabbitmq.channel.publish(
+            EXCHANGE,
+            ROUTING_KEY,
+            Buffer.from(JSON.stringify(payload)),
+            { persistent: true }
+        );
+    } catch (err) {
+        console.error('[session-service] RabbitMQ publish failed for session', sessionId, err.message);
+    }
     return { status: 200, qualifying: true, durationMinutes };
 }
 

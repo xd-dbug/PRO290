@@ -82,6 +82,28 @@ describe('endSession', () => {
         expect(rabbitmq.channel.publish).not.toHaveBeenCalled();
     });
 
+    it('returns 409 when session is already ended', async () => {
+        model.getSession.mockResolvedValue({
+            ...BASE_SESSION,
+            ended_at: new Date('2026-01-01T11:00:00Z')
+        });
+
+        const result = await endSession('user-1', 'sess-1', new Date());
+
+        expect(result).toEqual({ status: 409 });
+    });
+
+    it('returns 422 when session is already invalidated', async () => {
+        model.getSession.mockResolvedValue({
+            ...BASE_SESSION,
+            is_invalidated: 1
+        });
+
+        const result = await endSession('user-1', 'sess-1', new Date());
+
+        expect(result).toEqual({ status: 422 });
+    });
+
     it('invalidates stale session and returns session_invalidated', async () => {
         const now = new Date('2026-01-01T12:30:00Z');
         // last_heartbeat is 150 seconds before now — exceeds the 90-second threshold

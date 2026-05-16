@@ -27,7 +27,7 @@ async function updateSession(sessionId, durationMinutes, isQualifying) {
 
 async function getQualifyingCountToday(userId) {
     const [rows] = await pool.execute(
-        'SELECT COUNT(*) AS count FROM sessions WHERE user_id = ? AND is_qualifying = 1 AND DATE(ended_at) = CURDATE()',
+        'SELECT COUNT(*) AS count FROM sessions WHERE user_id = ? AND is_qualifying = 1 AND DATE(ended_at) = UTC_DATE()',
         [userId]
     );
     return rows[0].count;
@@ -47,12 +47,13 @@ async function markInvalidated(sessionId) {
     );
 }
 
-async function sweepStaleSessions() {
+async function sweepStaleSessions(intervalSeconds = 90) {
     await pool.execute(
         `UPDATE sessions
          SET is_invalidated = 1
          WHERE ended_at IS NULL
-           AND last_heartbeat < DATE_SUB(NOW(), INTERVAL 90 SECOND)`
+           AND last_heartbeat < DATE_SUB(NOW(), INTERVAL ? SECOND)`,
+        [intervalSeconds]
     );
 }
 
