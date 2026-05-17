@@ -18,38 +18,33 @@ services:
       retries: 5
       start_period: 30s
 
-  auth-service:
-    build:
-      context: ./backend
-      dockerfile: auth/Dockerfile
+  mongodb:
+    image: mongo:7
     environment:
-      DB_HOST: mysql
-      DB_USER: ${MYSQL_USER}
-      DB_PASSWORD: ${MYSQL_PASSWORD}
-      DB_NAME: ${MYSQL_DATABASE}
-      JWT_SECRET: ${JWT_SECRET}
-      PORT: 3001
+      MONGO_INITDB_DATABASE: dungeon
     ports:
-      - "3001:3001"
-    depends_on:
-      mysql:
-        condition: service_healthy
+      - "27017:27017"
+    volumes:
+      - ./backend/init.mongo.js:/docker-entrypoint-initdb.d/init.js
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
-  user-service:
-    build:
-      context: ./backend
-      dockerfile: user/Dockerfile
-    environment:
-      DB_HOST: mysql
-      DB_USER: ${MYSQL_USER}
-      DB_PASSWORD: ${MYSQL_PASSWORD}
-      DB_NAME: ${MYSQL_DATABASE}
-      PORT: 3002
+  consul:
+    image: hashicorp/consul:1.18
+    command: consul agent -dev -client=0.0.0.0 -log-level=warn
     ports:
-      - "3002:3002"
-    depends_on:
-      mysql:
-        condition: service_healthy
+      - "8500:8500"
+    healthcheck:
+      test: ["CMD", "consul", "info"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -63,6 +58,45 @@ services:
       retries: 5
       start_period: 30s
 
+  auth-service:
+    build:
+      context: ./backend
+      dockerfile: auth/Dockerfile
+    environment:
+      DB_HOST: mysql
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_NAME: ${MYSQL_DATABASE}
+      JWT_SECRET: ${JWT_SECRET}
+      CONSUL_HOST: consul
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+
+  user-service:
+    build:
+      context: ./backend
+      dockerfile: user/Dockerfile
+    environment:
+      DB_HOST: mysql
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_NAME: ${MYSQL_DATABASE}
+      CONSUL_HOST: consul
+      PORT: 3002
+    ports:
+      - "3002:3002"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+
   session-service:
     build:
       context: ./backend
@@ -73,12 +107,56 @@ services:
       DB_PASSWORD: ${MYSQL_PASSWORD}
       DB_NAME: ${MYSQL_DATABASE}
       RABBITMQ_URL: ${RABBITMQ_URL}
+      CONSUL_HOST: consul
       PORT: 3003
     depends_on:
       mysql:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+      consul:
+        condition: service_healthy
+    deploy:
+      replicas: 3
+
+  inventory-service:
+    build:
+      context: ./backend
+      dockerfile: inventory/Dockerfile
+    environment:
+      DB_HOST: mysql
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_NAME: ${MYSQL_DATABASE}
+      X_INTERNAL_SECRET: ${X_INTERNAL_SECRET}
+      CONSUL_HOST: consul
+      PORT: 3005
+    depends_on:
+      mysql:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+
+  dungeon-service:
+    build:
+      context: ./backend
+      dockerfile: dungeon/Dockerfile
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+      RABBITMQ_URL: ${RABBITMQ_URL}
+      INVENTORY_URL: http://inventory-service:3005
+      X_INTERNAL_SECRET: ${X_INTERNAL_SECRET}
+      CONSUL_HOST: consul
+      PORT: 3004
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      inventory-service:
+        condition: service_started
     deploy:
       replicas: 3
 
@@ -92,6 +170,8 @@ services:
       - auth-service
       - user-service
       - session-service
+      - inventory-service
+      - dungeon-service
 
   frontend:
     build:
@@ -106,3 +186,4 @@ services:
 
 volumes:
   mysql_data:
+  mongo_data:
