@@ -30,3 +30,16 @@ create table if not exists sessions (
     primary key (session_id),
     foreign key (user_id) references users(user_id) on delete cascade
     );
+
+create table if not exists inventory (
+    id          int          not null auto_increment,
+    user_id     char(36)     not null,
+    item_id     varchar(50)  not null,
+    item_name   varchar(100) not null,
+    rarity      varchar(20)  not null,
+    sprite_key  varchar(100) not null,
+    session_id  char(36)     not null,
+    granted_at  timestamp    not null default current_timestamp(),
+    primary key (id),
+    foreign key (user_id) references users(user_id) on delete cascade
+);
