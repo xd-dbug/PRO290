@@ -6,13 +6,14 @@
 
 ## 1. Vite Dev Proxy
 
-Add a `server.proxy` block to `vite.config.js`:
+Add a `server.proxy` block to `vite.config.js` with **two** entries:
 
-- Pattern: `/api`
-- Target: `http://localhost:80` (Nginx gateway)
-- `changeOrigin: true`
+- Pattern `/api` → `http://localhost:80` — protected routes (sessions, inventory, users, dungeon)
+- Pattern `/auth` → `http://localhost:80` — public auth routes (login, register)
 
-Any `/api/*` request from the Vite dev server is forwarded to Nginx unchanged. Path is not rewritten — `/api/auth/login` reaches Nginx as `/api/auth/login`. This only applies during `vite dev`; production traffic goes through Nginx directly, no Docker changes needed.
+Both use `changeOrigin: true`. Auth endpoints are NOT under `/api/` in Nginx — they sit at `/auth/login` and `/auth/register` directly. Forgetting the `/auth` proxy entry means login/register calls would 404 in dev.
+
+This only applies during `vite dev`; production traffic goes through Nginx directly, no Docker changes needed.
 
 ---
 
@@ -45,7 +46,7 @@ Signature: `client(path, options = {})`
 Behavior:
 1. Read `localStorage.getItem('token')`.
 2. If present, merge `Authorization: Bearer <token>` into request headers. If absent, omit the header (not an error — login/register are pre-auth).
-3. Call `fetch('/api' + path, mergedOptions)`.
+3. Call `fetch(path, mergedOptions)`. Path is the full path — callers supply the `/api/` or `/auth/` prefix themselves.
 4. If response is 401: clear localStorage, call `window.location.replace('/login')`, return (no throw needed).
 5. If response is not ok (other than 401): throw an `Error` with the status code.
 6. Return `response.json()`.
@@ -59,21 +60,21 @@ All modules import `client.js` and export named async functions. No raw `fetch` 
 - `register(email, username, password)` — POST `/auth/register`
 
 **`session.js`**
-- `startSession()` — POST `/sessions`
-- `endSession(id)` — POST `/sessions/:id/end`
-- `sendHeartbeat(id)` — POST `/sessions/:id/heartbeat`
+- `startSession()` — POST `/api/sessions/`
+- `endSession(id)` — POST `/api/sessions/:id/end`
+- `sendHeartbeat(id)` — POST `/api/sessions/:id/heartbeat`
 
 **`inventory.js`**
-- `getInventory()` — GET `/inventory`
+- `getInventory()` — GET `/api/inventory/`
 
 **`user.js`**
-- `getProfile()` — GET `/users/me`
+- `getProfile()` — GET `/api/users/me`
 
 **`notes.js`**
-- `getNotes()` — GET `/notes`
-- `createNote(body)` — POST `/notes`
-- `updateNote(id, body)` — PUT `/notes/:id`
-- `deleteNote(id)` — DELETE `/notes/:id`
+- `getNotes()` — GET `/api/users/me/notes`
+- `createNote(title, body)` — POST `/api/users/me/notes` (backend requires both fields)
+- `updateNote(id, title, body)` — PATCH `/api/users/me/notes/:id` (title and body both optional)
+- `deleteNote(id)` — DELETE `/api/users/me/notes/:id`
 
 ---
 
