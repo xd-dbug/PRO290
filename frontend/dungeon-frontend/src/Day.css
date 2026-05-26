@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-image: url("/Day.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.container {
+  background-color: aquamarine;
+  border-radius: 20px;
+  line-height: 100px;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  left: 0;
+  transform: none;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+.timer-wrapper{
+   background-color: aquamarine;
+   border-radius: 20px;
+   line-height: 100px;
+   position: fixed;
+   width:10%;
+}
+
+.task-wrapper{
+   background-color: aquamarine;
+   border-radius: 20px;
+   line-height: 100px;
+   position: fixed;
+   top: 20px;
+   right: 20px;
+   width:10%;
+}
