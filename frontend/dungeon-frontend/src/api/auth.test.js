@@ -1,4 +1,4 @@
-import { login, register } from './auth'
+import { login, register, logout } from './auth'
 
 describe('auth', () => {
   let fetchMock
@@ -69,6 +69,12 @@ describe('auth', () => {
     await register('user@test.com', 'hero', 'password123')
     const headers = fetchMock.mock.calls[0][1].headers || {}
     expect(headers).not.toHaveProperty('Authorization')
+  })
+
+  it('logout removes token from localStorage', () => {
+    localStorage.setItem('token', 'abc')
+    logout()
+    expect(localStorage.getItem('token')).toBeNull()
   })
 
   it('login throws with err.status on non-ok response', async () => {

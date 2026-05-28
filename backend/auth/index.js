@@ -2,6 +2,9 @@ const express = require('express');
 const { registerWithConsul } = require('../lib/consul');
 const authRouter = require('./authservice');
 
+process.on('uncaughtException', err => console.error('UNCAUGHT:', err));
+process.on('unhandledRejection', (reason) => console.error('UNHANDLED REJECTION:', reason));
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 

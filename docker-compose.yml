@@ -176,6 +176,8 @@ services:
   frontend:
     build:
       context: ./frontend/dungeon-frontend
+    environment:
+      API_HOST: http://nginx
     ports:
       - "5173:5173"
     volumes:

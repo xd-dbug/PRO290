@@ -1,7 +1,8 @@
 import { apiFetch } from './client'
 
 export function startSession() {
-  return apiFetch('/sessions', { method: 'POST' })
+  // trailing slash required — nginx location block is /api/sessions/ (not /api/sessions)
+  return apiFetch('/sessions/', { method: 'POST' })
 }
 
 export function endSession(sessionId) {

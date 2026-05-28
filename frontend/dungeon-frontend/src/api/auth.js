@@ -20,3 +20,8 @@ export function login(email, password) {
 export function register(email, username, password) {
   return authFetch('/auth/register', { email, username, password })
 }
+
+export function logout() {
+  localStorage.removeItem('token')
+  window.location.href = '/login'
+}
