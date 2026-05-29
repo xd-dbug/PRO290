@@ -13,7 +13,7 @@ background: radial-gradient(circle, rgba(112, 41, 99, 1) 5%, rgba(132, 78, 123, 
    background-color: #702963;
    border-style:groove;
   position: fixed;
-  bottom: 500px;
+  bottom: 350px;
   transform: translateX(-50%);
   width: 40%;
   height: 300px;
@@ -27,6 +27,7 @@ background: radial-gradient(circle, rgba(112, 41, 99, 1) 5%, rgba(132, 78, 123, 
 margin-top: 10px;
 }
 .password-container{
+
 margin-top: 10px;
 }
 
@@ -52,5 +53,5 @@ margin-top: 20px;
 }
 .password{
 align-self:center;
-margin-top: 400px;
+margin-top: 0;
 }

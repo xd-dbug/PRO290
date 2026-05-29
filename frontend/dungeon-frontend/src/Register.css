@@ -8,3 +8,49 @@ background: radial-gradient(circle, rgba(112, 41, 99, 1) 5%, rgba(132, 78, 123, 
   background-size: cover;
   background-position: center;
 }
+.register-container {
+   background-color: #702963;
+   border-style:groove;
+  position: fixed;
+  bottom: 350px;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 300px;
+  left: 27%;
+  transform: none;
+  border-radius: 20%;
+  box-sizing: border-box;
+}
+
+.email-container{
+margin-top: 10px;
+}
+.password-container{
+
+margin-top: 10px;
+}
+
+h1{
+    color:#BDB5D5;
+    text-align: center;
+    font-family: 'Arial', sans-serif;   
+}
+
+p{
+    color:#BDB5D5;
+    text-align: left;
+    font-family: 'Arial', sans-serif;
+}
+p1{
+    color:#BDB5D5;
+    text-align: left;
+    font-family: 'Arial', sans-serif;
+}
+.email{
+align-self:center;
+margin-top: 20px;
+}
+.password{
+align-self:center;
+margin-top: 0;
+}
