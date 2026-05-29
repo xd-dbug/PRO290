@@ -4,18 +4,18 @@ import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './Day.css'
 
-function App() {
+function Day() {
   return (
    
-    <div className='main'>
-      <div className='container'>
+    <div className='day-main'>
+      <div className='d-container'>
         <h1>Will place buttons here</h1>
       </div>
-      <wrapper className='timer-wrapper'>
+      <wrapper className='d-timer-wrapper'>
         <h2>Timer stuff</h2>
       </wrapper>
 
-    <wrapper className='task-wrapper'>
+    <wrapper className='d-task-wrapper'>
       <h3> Task stuff</h3>
     </wrapper>
     </div>
@@ -25,4 +25,4 @@ function App() {
   )
 }
 
-export default App
+export default Day

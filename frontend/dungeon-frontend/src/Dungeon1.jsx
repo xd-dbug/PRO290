@@ -4,18 +4,18 @@ import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './Dungeon1.css'
 
-function App() {
+function Dungeon1() {
   return (
    
-    <div className='main'>
-      <div className='container'>
+    <div className='d1-main'>
+      <div className='d1-container'>
         <h1>Will place buttons here</h1>
       </div>
-      <wrapper className='timer-wrapper'>
+      <wrapper className='d1-timer-wrapper'>
         <h2>Timer stuff</h2>
       </wrapper>
 
-    <wrapper className='task-wrapper'>
+    <wrapper className='d1-task-wrapper'>
       <h3> Task stuff</h3>
     </wrapper>
     </div>
@@ -25,4 +25,4 @@ function App() {
   )
 }
 
-export default App
+export default Dungeon1

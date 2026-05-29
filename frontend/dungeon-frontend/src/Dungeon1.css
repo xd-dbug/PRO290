@@ -1,16 +1,19 @@
 body {
   margin: 0;
   padding: 0;
+}
+
+.d1-main {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-image: url("/Dungeon.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
- 
+
 }
 
-.container {
+.d1-container {
   background-color: #E1712B;
   border-radius: 20px;
   line-height: 100px;
@@ -24,7 +27,7 @@ body {
   border-radius: 0;
   box-sizing: border-box;
 }
-.timer-wrapper{
+.d1-timer-wrapper{
    background-color: #E1712B;
    border-radius: 20px;
    line-height: 100px;
@@ -32,7 +35,7 @@ body {
    width:10%;
 }
 
-.task-wrapper{
+.d1-task-wrapper{
    background-color: #E1712B;
    border-radius: 20px;
    line-height: 100px;
