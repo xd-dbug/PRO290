@@ -1,0 +1,37 @@
+/* Edit: change height, background-color, or border-top to restyle the bottom bar */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  background-color: #702963;
+  border-top: 1px groove rgba(189, 181, 213, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+/* Edit: change gap to adjust spacing between timer and button in the left section */
+.bottom-bar__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Edit: change gap to adjust spacing between username/buttons in the right section */
+.bottom-bar__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Edit: change color, font-size, or font-family to style the username label */
+.bottom-bar__username {
+  color: #BDB5D5;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
