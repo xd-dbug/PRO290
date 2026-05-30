@@ -1,0 +1,48 @@
+/* src/components/DungeonScene.css */
+
+.dungeon-scene {
+  padding: 16px 16px 60px 16px;
+}
+
+.dungeon-scene__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 80px);
+  gap: 8px;
+}
+
+.item-cell {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.item-cell__sprite {
+  max-width: 64px;
+  max-height: 64px;
+  object-fit: contain;
+}
+
+.item-cell__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  text-align: center;
+}
+
+.item-cell__name {
+  font-size: 10px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+}
+
+.item-cell__rarity {
+  font-size: 9px;
+  font-family: Arial, sans-serif;
+  text-transform: capitalize;
+}
