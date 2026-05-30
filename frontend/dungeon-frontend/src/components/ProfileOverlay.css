@@ -1,0 +1,56 @@
+/* src/components/ProfileOverlay.css */
+
+/* Edit: change background to adjust the backdrop behind the overlay */
+.overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+/* Edit: change width, border-radius, or padding to adjust the card shape */
+.profile-overlay {
+  background-color: #702963;
+  border-style: groove;
+  border-radius: 20%;
+  padding: 32px;
+  width: 40%;
+  min-width: 280px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* Edit: change top/right or font-size to reposition or resize the close button */
+.overlay-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #BDB5D5;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Edit: change margin-top to adjust spacing between field groups */
+.field-group {
+  margin-top: 10px;
+}
+
+/* Edit: change width or padding to style inputs inside overlays */
+.overlay-input {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 4px;
+}
+
+/* Edit: change color or font-size to style inline validation/error messages */
+.field-error {
+  color: #ff6b6b;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  margin: 4px 0 0;
+}
