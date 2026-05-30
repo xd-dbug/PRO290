@@ -12,13 +12,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/day" element={<Day />} />
-        <Route path="/night" element={<Night />} />
-        <Route path="/dungeon1" element={<Dungeon1 />} />
-        <Route path="/dungeon2" element={<Dungeon2 />} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        {/*<Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />*/}
         {/* ProtectedRoute wraps any route that requires a valid JWT in localStorage.
             To add more protected routes, nest them the same way. */}
         <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

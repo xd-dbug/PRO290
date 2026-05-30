@@ -1,6 +1,8 @@
 const express = require('express');
 const {updateUser, deleteUser, findUserByID} = require("../model/users");
 const {getNotes, createNote, updateNote, deleteNote} = require("../model/notes");
+const { getSessionStats } = require("../model/sessions");
+const { getInventoryStats } = require("../model/inventory");
 
 const router = express.Router();
 
@@ -106,7 +108,27 @@ router.delete("/me/notes/:noteId", async (req, res) => {
 })
 
 router.get('/:userId/stats', async (req, res) => {
-    return res.status(200).json({ message: "not implemented yet" });
+    const requesterId = req.headers['x-user-id'];
+    if (!requesterId) return res.status(401).json({ error: 'unauthorized' });
+    if (req.params.userId !== requesterId) return res.status(403).json({ error: 'forbidden' });
+
+    try {
+        const [sessionStats, inventoryStats] = await Promise.all([
+            getSessionStats(requesterId),
+            getInventoryStats(requesterId)
+        ]);
+        return res.status(200).json({
+            sessions: {
+                total: Number(sessionStats.total_sessions),
+                qualifying: Number(sessionStats.qualifying_sessions),
+                totalQualifyingMinutes: Number(sessionStats.total_qualifying_minutes),
+                longestSessionMinutes: sessionStats.longest_session_minutes !== null ? Number(sessionStats.longest_session_minutes) : null
+            },
+            inventory: inventoryStats
+        });
+    } catch (err) {
+        return res.status(500).json({ error: 'internal server error' });
+    }
 })
 
 module.exports = router;

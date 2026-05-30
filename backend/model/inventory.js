@@ -15,4 +15,18 @@ async function getInventoryByUser(userId) {
     return rows;
 }
 
-module.exports = { grantItem, getInventoryByUser };
+async function getInventoryStats(userId) {
+    const [rows] = await pool.execute(
+        'SELECT rarity, COUNT(*) AS count FROM inventory WHERE user_id = ? GROUP BY rarity',
+        [userId]
+    );
+    const byRarity = { common: 0, rare: 0, legendary: 0, mythic: 0 };
+    let total = 0;
+    for (const row of rows) {
+        byRarity[row.rarity] = Number(row.count);
+        total += Number(row.count);
+    }
+    return { total, byRarity };
+}
+
+module.exports = { grantItem, getInventoryByUser, getInventoryStats };

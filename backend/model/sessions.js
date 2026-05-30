@@ -57,6 +57,20 @@ async function sweepStaleSessions(intervalSeconds = 90) {
     );
 }
 
+async function getSessionStats(userId) {
+    const [rows] = await pool.execute(
+        `SELECT
+            COUNT(*)                                                            AS total_sessions,
+            SUM(is_qualifying)                                                  AS qualifying_sessions,
+            COALESCE(SUM(CASE WHEN is_qualifying = 1 THEN duration_minutes END), 0) AS total_qualifying_minutes,
+            MAX(duration_minutes)                                               AS longest_session_minutes
+         FROM sessions
+         WHERE user_id = ? AND ended_at IS NOT NULL AND is_invalidated = 0`,
+        [userId]
+    );
+    return rows[0];
+}
+
 module.exports = {
     createSession,
     getSession,
@@ -64,5 +78,6 @@ module.exports = {
     getQualifyingCountToday,
     updateHeartbeat,
     markInvalidated,
-    sweepStaleSessions
+    sweepStaleSessions,
+    getSessionStats
 };
