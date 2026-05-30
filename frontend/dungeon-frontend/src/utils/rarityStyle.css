@@ -1,0 +1,12 @@
+/* src/utils/rarityStyle.css */
+
+/* Edit: change keyframe values to adjust the mythic glow intensity or speed */
+@keyframes mythic-pulse {
+  0%, 100% { box-shadow: 0 0 12px #f59e0b, 0 0 30px rgba(245, 158, 11, 0.4); }
+  50%       { box-shadow: 0 0 20px #f59e0b, 0 0 50px rgba(245, 158, 11, 0.6), 0 0 80px rgba(245, 158, 11, 0.2); }
+}
+
+/* Edit: change animation-duration to speed up or slow down the mythic pulse */
+.mythic-pulse {
+  animation: mythic-pulse 2s ease-in-out infinite;
+}
