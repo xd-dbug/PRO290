@@ -1,0 +1,95 @@
+/* src/components/NotesOverlay.css */
+
+/* .overlay-backdrop is defined in ProfileOverlay.css — both overlays share it.
+   Duplicated here so NotesOverlay.css is self-contained. */
+.overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+/* Edit: change width or max-height to control overlay size */
+.notes-overlay {
+  background-color: #702963;
+  border-style: groove;
+  border-radius: 20%;
+  padding: 32px;
+  width: 50%;
+  min-width: 320px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* Edit: change gap to adjust spacing in the create-note form */
+.notes-create {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+/* Edit: change gap to adjust spacing between notes */
+.notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Edit: change border or padding to restyle individual note cards */
+.note-item {
+  border: 1px groove rgba(189, 181, 213, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+/* Edit: change color or font-weight to style note titles */
+.note-item__title {
+  color: #BDB5D5;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  margin: 0 0 4px;
+}
+
+/* Edit: change font-size or color to style note body text */
+.note-item__body {
+  color: #BDB5D5;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  margin: 0 0 8px;
+}
+
+/* Edit: change gap to adjust spacing between Edit/Delete buttons */
+.note-item__actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Edit: change gap to adjust spacing between fields in inline edit mode */
+.note-item__edit {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Edit: change width or padding to style inputs inside overlays */
+/* Duplicated from ProfileOverlay.css so this file is self-contained */
+.overlay-input {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 4px;
+}
+
+/* Edit: change color or font-size to style error messages */
+/* Duplicated from ProfileOverlay.css so this file is self-contained */
+.field-error {
+  color: #ff6b6b;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  margin: 4px 0 0;
+}
